@@ -7,6 +7,26 @@ import { sendSubmission } from './http-service';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 
+
+const handleSubmission = async (values: Submission, actions: FormikActions<Submission>) => {
+
+	actions.setSubmitting(true);
+	let result = await sendSubmission(values);
+
+	if (!result) {
+		alert('Something went wrong while sending your submission. Please try again.');
+		return;
+	}
+
+	actions.resetForm();
+	actions.setSubmitting(false);
+
+	await Swal.fire({
+		title: 'Good luck!',
+		text: 'You\'ve been added to the giveaway'
+	});
+}
+
 const SubmissionPage = () => {
 	return (
 		<section className="hero is-fullheight">
@@ -36,24 +56,6 @@ const SubmissionForm = () => {
 			.email()
 			.required('Required')
 	})
-
-	const handleSubmission = async (values: Submission, actions: FormikActions<Submission>) => {
-
-		let result = await sendSubmission(values);
-
-		if (!result) {
-			alert('Something went wrong while sending your submission. Please try again.');
-			return;
-		}
-
-		Swal.fire({
-			title: 'Good luck!',
-			text: 'You\'ve been added to the giveaway'
-		});
-
-		actions.resetForm();
-		actions.setSubmitting(false);
-	}
 
 	const formContent = (bag: FormikProps<Submission>) => (
 		<Form>

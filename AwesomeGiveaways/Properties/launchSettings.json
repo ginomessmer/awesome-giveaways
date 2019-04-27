@@ -17,7 +17,6 @@
     },
     "AwesomeGiveaways": {
       "commandName": "Project",
-      "workingDirectory": "C:\\Projects\\Personal\\AwesomeGiveaways\\AwesomeGiveaways",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
