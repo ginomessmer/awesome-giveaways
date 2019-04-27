@@ -58,7 +58,7 @@ namespace AwesomeGiveaways.Controllers
         {
             // Check whether submission already exists
             var existingSubmission = await _context.Submission.FirstOrDefaultAsync(x => x.Email.ToLower() == submission.Email.ToLower() 
-                && x.Name.ToLower() == submission.Name.ToLower());
+                || x.Name.ToLower() == submission.Name.ToLower());
 
             if (existingSubmission != null)
                 return BadRequest("Email already registered");
