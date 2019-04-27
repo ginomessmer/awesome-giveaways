@@ -5,6 +5,9 @@ export const sendSubmission = async (submission: Submission): Promise<boolean> =
 		await fetch('/api/submissions', {
 			method: 'POST',
 			body: JSON.stringify(submission),
+			headers: {
+				'Content-Type': 'application/json'
+			},
 			cache: 'no-cache'
 		});
 		return Promise.resolve(true);

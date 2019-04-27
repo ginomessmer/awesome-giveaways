@@ -12,6 +12,8 @@ namespace AwesomeGiveaways.Common
         public GiveawayDbContext (DbContextOptions<GiveawayDbContext> options)
             : base(options)
         {
+            this.Database.EnsureCreated();
+            this.Database.Migrate();
         }
 
         public DbSet<AwesomeGiveaways.Models.Submission> Submission { get; set; }
