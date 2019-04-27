@@ -30,9 +30,9 @@ namespace AwesomeGiveaways.Controllers
 
         // GET: api/Submissions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Submission>> GetSubmission(string id)
+        public async Task<ActionResult<Submission>> GetSubmission(string email)
         {
-            var submission = await _context.Submission.FindAsync(id);
+            var submission = await _context.Submission.FindAsync(email);
 
             if (submission == null)
             {
@@ -40,62 +40,22 @@ namespace AwesomeGiveaways.Controllers
             }
 
             return submission;
-        }
-
-        // PUT: api/Submissions/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSubmission(string id, Submission submission)
-        {
-            if (id != submission.Email)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(submission).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SubmissionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Submissions
         [HttpPost]
         public async Task<ActionResult<Submission>> PostSubmission(Submission submission)
         {
+            // Check whether submission already exists
+            var existingSubmission = await _context.Submission.FirstOrDefaultAsync(x => x.Email == submission.Email);
+            if (existingSubmission != null)
+                return BadRequest("Email already registered");
+
+            // Add submission
             _context.Submission.Add(submission);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSubmission", new { id = submission.Email }, submission);
-        }
-
-        // DELETE: api/Submissions/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Submission>> DeleteSubmission(string id)
-        {
-            var submission = await _context.Submission.FindAsync(id);
-            if (submission == null)
-            {
-                return NotFound();
-            }
-
-            _context.Submission.Remove(submission);
-            await _context.SaveChangesAsync();
-
-            return submission;
         }
 
         private bool SubmissionExists(string id)
