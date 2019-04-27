@@ -4,6 +4,8 @@ import { Submission } from './models';
 import { Formik, FormikActions, FormikProps, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { sendSubmission } from './http-service';
+import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 const SubmissionPage = () => {
 	return (
@@ -44,7 +46,10 @@ const SubmissionForm = () => {
 			return;
 		}
 
-		alert('You\'ve been added to the giveaway. Good luck!');
+		Swal.fire({
+			title: 'Good luck!',
+			text: 'You\'ve been added to the giveaway'
+		});
 
 		actions.resetForm();
 		actions.setSubmitting(false);
@@ -68,7 +73,7 @@ const SubmissionForm = () => {
 				</div>
 			</div>
 
-			<p>By submitting this form you accept our privacy policy.</p>
+			<p>By submitting this form you accept our <Link to="/privacy">privacy policy</Link>.</p>
 			<br />
 			<button className="button is-link" disabled={!bag.isValid} onClick={bag.submitForm}>Submit</button>
 		</Form>
