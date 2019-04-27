@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using AwesomeGiveaways.Common;
+using AwesomeGiveaways.Hubs;
 
 namespace AwesomeGiveaways
 {
@@ -32,6 +33,8 @@ namespace AwesomeGiveaways
 
             services.AddDbContext<GiveawayDbContext>(options =>
                     options.UseSqlite(Configuration.GetConnectionString("GiveawayDbContext")));
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +60,11 @@ namespace AwesomeGiveaways
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
+            });
+
+            app.UseSignalR(options =>
+            {
+                options.MapHub<GiveawayHub>("/hub");
             });
 
             app.UseSpa(spa =>

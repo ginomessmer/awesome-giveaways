@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AwesomeGiveaways.Common;
 using AwesomeGiveaways.Models;
+using Microsoft.AspNetCore.SignalR;
+using AwesomeGiveaways.Hubs;
 
 namespace AwesomeGiveaways.Controllers
 {
@@ -15,10 +17,12 @@ namespace AwesomeGiveaways.Controllers
     public class SubmissionsController : ControllerBase
     {
         private readonly GiveawayDbContext _context;
+        private readonly IHubContext<GiveawayHub> _hubContext;
 
-        public SubmissionsController(GiveawayDbContext context)
+        public SubmissionsController(GiveawayDbContext context, IHubContext<GiveawayHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         // GET: api/Submissions
@@ -54,6 +58,10 @@ namespace AwesomeGiveaways.Controllers
             // Add submission
             _context.Submission.Add(submission);
             await _context.SaveChangesAsync();
+
+            // Notify dashboard
+            int count = await _context.Submission.CountAsync();
+            await _hubContext.Clients.All.SendAsync("counterReceived", count);
 
             return CreatedAtAction("GetSubmission", new { id = submission.Email }, submission);
         }
