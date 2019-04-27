@@ -4,6 +4,8 @@ import { Submission } from '../submissions/models';
 
 import * as SignalR from '@aspnet/signalr';
 
+import QRCode from 'qrcode.react';
+
 export const DashboardPage = () => {
 
 	const [counter, setCounter] = useState<number>(0);
@@ -37,8 +39,18 @@ export const DashboardPage = () => {
 		<section className="hero is-fullheight">
 			<div className="hero-body">
 				<div className="container has-text-centered">
-					<h1 className="title is-size-1">{counter}</h1>
-					<h2 className="subtitle">People signed up</h2>
+					<div className="columns is-vcentered">
+						<div className="column">
+							<h1 className="title is-size-1">{counter}</h1>
+							<h2 className="subtitle">People signed up</h2>
+						</div>
+						<div className="column divider-left">
+							<QRCode value={window.location.origin} />
+							<p>
+								Join us here
+							</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
