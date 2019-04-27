@@ -9,12 +9,14 @@ import { Link } from 'react-router-dom';
 
 
 const handleSubmission = async (values: Submission, actions: FormikActions<Submission>) => {
-
 	actions.setSubmitting(true);
 	let result = await sendSubmission(values);
 
 	if (!result) {
-		alert('Something went wrong while sending your submission. Please try again.');
+		await Swal.fire({
+			title: 'We could not add you to the giveaway',
+			text: 'It seems like you are already part of the giveaway'
+		});
 		return;
 	}
 

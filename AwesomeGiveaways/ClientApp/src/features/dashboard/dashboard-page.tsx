@@ -16,7 +16,7 @@ export const DashboardPage = () => {
 		.withUrl('/hub')
 		.build();
 
-	connection.start().catch(reason => alert(reason));
+	connection.start().catch(reason => console.log(reason));
 
 	// Set up SignalR
 	connection.on('counterReceived', (count: number) => {
@@ -37,19 +37,6 @@ export const DashboardPage = () => {
 		});
 	}, []);
 
-	const pickLuckyWinner = async () => {
-		let data = await getJson<Submission>('/api/submissions/random');
-		if (data === undefined) {
-			return;
-		}
-
-		let winner = data as Submission;
-		Swal.fire({
-			html: '<div><h2 class="subtitle">And the winner is...</h2><h1 class="title">' + winner.name + '</h1></div>',
-			confirmButtonText: 'Congrats!'
-		});
-	};
-
 	return (
 		<section className="hero is-fullheight">
 			<div className="hero-body">
@@ -57,7 +44,7 @@ export const DashboardPage = () => {
 
 					<div className="columns is-vcentered">
 						<div className="column">
-							<h1 className="title is-size-1" onClick={pickLuckyWinner}>{counter}</h1>
+							<h1 className="title is-size-1">{counter}</h1>
 							<h2 className="subtitle">People signed up</h2>
 						</div>
 						<div className="column divider-left">

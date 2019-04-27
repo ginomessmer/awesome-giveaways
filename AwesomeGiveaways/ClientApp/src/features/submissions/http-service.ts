@@ -6,7 +6,7 @@ export const sendSubmission = async (submission: Submission): Promise<boolean> =
 
 export const postJson = async (url: string, object: any): Promise<boolean> => {
 	try {
-		await fetch(url, {
+		let result = await fetch(url, {
 			method: 'POST',
 			body: JSON.stringify(object),
 			headers: {
@@ -14,7 +14,8 @@ export const postJson = async (url: string, object: any): Promise<boolean> => {
 			},
 			cache: 'no-cache'
 		});
-		return Promise.resolve(true);
+
+		return Promise.resolve(result.ok);
 	} catch (exception) {
 		return Promise.resolve(false);
 	}
