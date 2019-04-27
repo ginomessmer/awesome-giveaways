@@ -3,6 +3,7 @@ import { Submission } from './models';
 
 import { Formik, FormikActions, FormikProps, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { sendSubmission } from './http-service';
 
 const SubmissionPage = () => {
 	return (
@@ -34,7 +35,15 @@ const SubmissionForm = () => {
 			.required('Required')
 	})
 
-	const handleSubmission = (values: Submission, actions: FormikActions<Submission>) => {
+	const handleSubmission = async (values: Submission, actions: FormikActions<Submission>) => {
+
+		let result = await sendSubmission(values);
+
+		if (!result) {
+			alert('Something went wrong while sending your submission. Please try again.');
+			return;
+		}
+
 		actions.resetForm();
 		actions.setSubmitting(false);
 	}
