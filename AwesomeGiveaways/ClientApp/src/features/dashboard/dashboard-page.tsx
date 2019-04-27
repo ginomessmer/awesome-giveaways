@@ -52,6 +52,7 @@ export const DashboardPage = () => {
 							<p>
 								Join us here
 							</p>
+                            <p>https://gab-giveaway.azurewebsites.net</p>
 						</div>
 					</div>
 				</div>
