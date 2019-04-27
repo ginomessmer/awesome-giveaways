@@ -6,10 +6,14 @@ import * as Yup from 'yup';
 
 const SubmissionPage = () => {
 	return (
-		<div>
-			<h1 className="title">Take part</h1>
-			<SubmissionForm />
-		</div>
+		<section className="hero is-fullheight">
+			<div className="hero-body">
+				<div className="container">
+					<h1 className="title">Global Azure Bootcamp Giveaway</h1>
+					<SubmissionForm />
+				</div>
+			</div>
+		</section>
 	)
 }
 
@@ -41,7 +45,7 @@ const SubmissionForm = () => {
 				<label htmlFor="name" className="label">Your Name</label>
 				<div className="control">
 					<Field className="input" type="text" name="name" />
-					<ErrorMessage name="name" />
+					<ErrorMessage className="help is-danger" name="name" component="p" />
 				</div>
 			</div>
 
@@ -49,11 +53,13 @@ const SubmissionForm = () => {
 				<label htmlFor="email" className="label">Your Email Address</label>
 				<div className="control">
 					<Field className="input" type="email" name="email" />
-					<ErrorMessage name="email" />
+					<ErrorMessage className="help is-danger" name="email" component="p" />
 				</div>
 			</div>
 
-			<button className="button is-link" onClick={bag.submitForm}>Submit</button>
+			<p>By submitting this form you accept our privacy policy.</p>
+			<br />
+			<button className="button is-link" disabled={!bag.isValid} onClick={bag.submitForm}>Submit</button>
 		</Form>
 	);
 
