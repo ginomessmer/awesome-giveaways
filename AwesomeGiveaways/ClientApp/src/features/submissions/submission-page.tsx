@@ -12,7 +12,7 @@ const handleSubmission = async (values: Submission, actions: FormikActions<Submi
 	actions.setSubmitting(true);
 	let result = await sendSubmission(values);
 
-	if (!result) {
+	if (result === false) {
 		await Swal.fire({
 			title: 'We could not add you to the giveaway',
 			text: 'It seems like you are already part of the giveaway'
@@ -79,7 +79,7 @@ const SubmissionForm = () => {
 
 			<p>By submitting this form you accept our <Link to="/privacy">privacy policy</Link>.</p>
 			<br />
-			<button className="button is-link" disabled={!bag.isValid} onClick={bag.submitForm}>Submit</button>
+			<button type="button" className="button is-link" disabled={!bag.isValid} onClick={bag.submitForm}>Submit</button>
 		</Form>
 	);
 
