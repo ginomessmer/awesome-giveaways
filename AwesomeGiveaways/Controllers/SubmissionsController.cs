@@ -32,6 +32,12 @@ namespace AwesomeGiveaways.Controllers
             return await _context.Submission.ToListAsync();
         }
 
+        [HttpGet("random")]
+        public async Task<ActionResult<Submission>> GetRandomSubmission()
+        {
+            return await _context.Submission.OrderBy(x => Guid.NewGuid()).FirstAsync();
+        }
+
         // GET: api/Submissions/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Submission>> GetSubmission(string email)
@@ -51,7 +57,9 @@ namespace AwesomeGiveaways.Controllers
         public async Task<ActionResult<Submission>> PostSubmission(Submission submission)
         {
             // Check whether submission already exists
-            var existingSubmission = await _context.Submission.FirstOrDefaultAsync(x => x.Email == submission.Email);
+            var existingSubmission = await _context.Submission.FirstOrDefaultAsync(x => x.Email.ToLower() == submission.Email.ToLower() 
+                && x.Name.ToLower() == submission.Name.ToLower());
+
             if (existingSubmission != null)
                 return BadRequest("Email already registered");
 

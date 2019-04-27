@@ -5,6 +5,8 @@ import { Submission } from '../submissions/models';
 import * as SignalR from '@aspnet/signalr';
 
 import QRCode from 'qrcode.react';
+import Swal from 'sweetalert2';
+
 
 export const DashboardPage = () => {
 
@@ -33,19 +35,33 @@ export const DashboardPage = () => {
 			let submissions = data as Submission[];
 			setCounter(submissions.length);
 		});
-	}, [])
+	}, []);
+
+	const pickLuckyWinner = async () => {
+		let data = await getJson<Submission>('/api/submissions/random');
+		if (data === undefined) {
+			return;
+		}
+
+		let winner = data as Submission;
+		Swal.fire({
+			html: '<div><h2 class="subtitle">And the winner is...</h2><h1 class="title">' + winner.name + '</h1></div>',
+			confirmButtonText: 'Congrats!'
+		});
+	};
 
 	return (
 		<section className="hero is-fullheight">
 			<div className="hero-body">
 				<div className="container has-text-centered">
+
 					<div className="columns is-vcentered">
 						<div className="column">
-							<h1 className="title is-size-1">{counter}</h1>
+							<h1 className="title is-size-1" onClick={pickLuckyWinner}>{counter}</h1>
 							<h2 className="subtitle">People signed up</h2>
 						</div>
 						<div className="column divider-left">
-							<QRCode value={window.location.origin} />
+							<QRCode size={200} value={window.location.origin} />
 							<p>
 								Join us here
 							</p>
