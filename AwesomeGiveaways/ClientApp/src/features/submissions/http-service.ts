@@ -20,7 +20,7 @@ export const postJson = async (url: string, object: any): Promise<boolean> => {
 	}
 }
 
-export const getJson = async <T>(url: string, object: any): Promise<T | boolean> => {
+export const getJson = async <T>(url: string): Promise<T | undefined> => {
 	try {
 		let result = await fetch(url, {
 			method: 'GET',
@@ -33,6 +33,6 @@ export const getJson = async <T>(url: string, object: any): Promise<T | boolean>
 		let json = await result.json();
 		return Promise.resolve(json as T);
 	} catch (exception) {
-		return Promise.resolve(false);
+		return Promise.resolve(undefined);
 	}
 }
