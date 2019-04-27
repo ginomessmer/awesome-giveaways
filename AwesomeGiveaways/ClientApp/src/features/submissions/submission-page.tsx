@@ -44,6 +44,8 @@ const SubmissionForm = () => {
 			return;
 		}
 
+		alert('You\'ve been added to the giveaway. Good luck!');
+
 		actions.resetForm();
 		actions.setSubmitting(false);
 	}
